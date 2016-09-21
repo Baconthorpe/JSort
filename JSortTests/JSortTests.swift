@@ -25,5 +25,10 @@ class JSortTests: XCTestCase {
         XCTAssert(jsortObject["sky_is_blue"]["butter"].isNull)
         XCTAssert(jsortObject["sky_is_blue"]["milk"].bool == nil)
         XCTAssert(jsortObject["sky_is_blue"]["milk"].isValid != true)
+        
+        guard let rootDictionary: [String:Any] = jsortObject.dictionary else { XCTFail(); return }
+        guard let skyIsBlue: [String:Any] = rootDictionary["sky_is_blue"] as? [String:Any] else { XCTFail(); return }
+        
+        XCTAssert(skyIsBlue["cheese"] as? Int == 1)
     }
 }

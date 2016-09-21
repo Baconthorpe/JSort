@@ -133,16 +133,72 @@ struct JSort: CustomStringConvertible {
         return objectAsDouble
     }
     
-    public var array: [JSort]? {
+    public var array: [Any]? {
         guard contentType == .Array else { return nil }
         guard let objectAsArray = object as? [JSort] else { return nil }
-        return objectAsArray
+        
+        var anyTypeArray: [Any] = []
+        for jsortObject in objectAsArray {
+            switch jsortObject.contentType {
+            case .String:
+                if let certainString = jsortObject.string {
+                    anyTypeArray.append(certainString)
+                }
+            case .IntOrBool:
+                if let certainInt = jsortObject.int {
+                    anyTypeArray.append(certainInt)
+                }
+            case .Double:
+                if let certainDouble = jsortObject.double {
+                    anyTypeArray.append(certainDouble)
+                }
+            case .Array:
+                if let certainArray = jsortObject.array {
+                    anyTypeArray.append(certainArray)
+                }
+            case .Dictionary:
+                if let certainDictionary = jsortObject.dictionary {
+                    anyTypeArray.append(certainDictionary)
+                }
+            default:
+                anyTypeArray.append(NSNull())
+            }
+        }
+        return anyTypeArray
     }
     
-    public var dictionary: [String:JSort]? {
+    public var dictionary: [String:Any]? {
         guard contentType == .Dictionary else { return nil }
         guard let objectAsDictionary = object as? [String:JSort] else { return nil }
-        return objectAsDictionary
+        
+        var anyTypeDictionary: [String:Any] = [:]
+        for (key, value) in objectAsDictionary {
+            switch value.contentType {
+            case .String:
+                if let certainString = value.string {
+                    anyTypeDictionary[key] = certainString
+                }
+            case .IntOrBool:
+                if let certainInt = value.int {
+                    anyTypeDictionary[key] = certainInt
+                }
+            case .Double:
+                if let certainDouble = value.double {
+                    anyTypeDictionary[key] = certainDouble
+                }
+            case .Array:
+                if let certainArray = value.array {
+                    anyTypeDictionary[key] = certainArray
+                }
+            case .Dictionary:
+                if let certainDictionary = value.dictionary {
+                    anyTypeDictionary[key] = certainDictionary
+                }
+            default:
+                anyTypeDictionary[key] = NSNull()
+            }
+        }
+        return anyTypeDictionary
     }
     
     public var isNull: Bool {
