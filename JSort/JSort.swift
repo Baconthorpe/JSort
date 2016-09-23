@@ -91,21 +91,22 @@ struct JSort: CustomStringConvertible {
     }
     
     // MARK:
-    // MARK: Access
+    // MARK: Access - Subscripts
     
-    subscript(spec: Any) -> JSort {
-        if let index = spec as? Int {
-            guard contentType == .Array else { return JSort.invalidSubscriptJSort() }
-            let objectAsArray = object as! [JSort]
-            return objectAsArray[index]
-        } else if let key = spec as? String {
-            guard contentType == .Dictionary else { return JSort.invalidSubscriptJSort() }
-            let objectAsDictionary = object as! [String:JSort]
-            return objectAsDictionary[key] ?? JSort.invalidSubscriptJSort()
-        }
-        
-        return JSort.invalidSubscriptJSort()
+    subscript(index: Int) -> JSort {
+        guard contentType == .Array else { return JSort.invalidSubscriptJSort() }
+        let objectAsArray = object as! [JSort]
+        return objectAsArray[index]
     }
+    
+    subscript(key: String) -> JSort {
+        guard contentType == .Dictionary else { return JSort.invalidSubscriptJSort() }
+        let objectAsDictionary = object as! [String:JSort]
+        return objectAsDictionary[key] ?? JSort.invalidSubscriptJSort()
+    }
+    
+    // MARK:
+    // MARK: Access - Standard Swift Types
     
     public var string: String? {
         guard contentType == .String else { return nil }
