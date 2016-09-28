@@ -8,19 +8,19 @@
 
 import Foundation
 
-struct JSort: CustomStringConvertible {
+public struct JSort: CustomStringConvertible {
     
     // MARK:
     // MARK: Types of Content
     
     private enum ContentType {
-        case String
-        case IntOrBool
-        case Double
-        case Array
-        case Dictionary
-        case Null
-        case InvalidSubscript
+        case string
+        case intOrBool
+        case double
+        case array
+        case dictionary
+        case null
+        case invalidSubscript
     }
     
     // MARK:
@@ -38,21 +38,21 @@ struct JSort: CustomStringConvertible {
     }
     
     private static func invalidSubscriptJSort() -> JSort {
-        return JSort(object: ContentType.InvalidSubscript, contentType: ContentType.InvalidSubscript)
+        return JSort(object: ContentType.invalidSubscript, contentType: ContentType.invalidSubscript)
     }
     
     private init?(foundationObject: Any) {
         guard let verifiedJSONType = JSort.contentTypeFor(foundationObject: foundationObject) else { return nil }
         self.contentType = verifiedJSONType
         
-        if verifiedJSONType == .Array {
+        if verifiedJSONType == .array {
             var parsedArray: [Any] = []
             let rawArray = foundationObject as! [Any]
             for item in rawArray {
                 parsedArray.append(JSort(foundationObject: item))
             }
             self.object = parsedArray
-        } else if verifiedJSONType == .Dictionary {
+        } else if verifiedJSONType == .dictionary {
             var parsedDictionary: [String:Any] = [:]
             let rawDictionary = foundationObject as! [String:Any]
             for (key, value) in rawDictionary {
@@ -74,17 +74,17 @@ struct JSort: CustomStringConvertible {
     
     private static func contentTypeFor(foundationObject: Any) -> ContentType? {
         if let _ = foundationObject as? String {
-            return ContentType.String
+            return ContentType.string
         } else if let _ = foundationObject as? Int {
-            return ContentType.IntOrBool
+            return ContentType.intOrBool
         } else if let _ = foundationObject as? Double {
-            return ContentType.Double
+            return ContentType.double
         } else if let _ = foundationObject as? NSArray {
-            return ContentType.Array
+            return ContentType.array
         } else if let _ = foundationObject as? NSDictionary {
-            return ContentType.Dictionary
+            return ContentType.dictionary
         } else if let _ = foundationObject as? NSNull {
-            return ContentType.Null
+            return ContentType.null
         }
         
         return nil
@@ -94,13 +94,13 @@ struct JSort: CustomStringConvertible {
     // MARK: Access - Subscripts
     
     subscript(index: Int) -> JSort {
-        guard contentType == .Array else { return JSort.invalidSubscriptJSort() }
+        guard contentType == .array else { return JSort.invalidSubscriptJSort() }
         let objectAsArray = object as! [JSort]
         return objectAsArray[index]
     }
     
     subscript(key: String) -> JSort {
-        guard contentType == .Dictionary else { return JSort.invalidSubscriptJSort() }
+        guard contentType == .dictionary else { return JSort.invalidSubscriptJSort() }
         let objectAsDictionary = object as! [String:JSort]
         return objectAsDictionary[key] ?? JSort.invalidSubscriptJSort()
     }
@@ -109,19 +109,19 @@ struct JSort: CustomStringConvertible {
     // MARK: Access - Standard Swift Types
     
     public var string: String? {
-        guard contentType == .String else { return nil }
+        guard contentType == .string else { return nil }
         guard let objectAsString = object as? String else { return nil }
         return objectAsString
     }
     
     public var int: Int? {
-        guard contentType == .IntOrBool else { return nil }
+        guard contentType == .intOrBool else { return nil }
         guard let objectAsInt = object as? Int else { return nil }
         return objectAsInt
     }
     
     public var bool: Bool? {
-        guard contentType == .IntOrBool else { return nil }
+        guard contentType == .intOrBool else { return nil }
         guard let objectAsInt = object as? Int else { return nil }
         if objectAsInt == 1 { return true }
         if objectAsInt == 0 { return false }
@@ -129,35 +129,35 @@ struct JSort: CustomStringConvertible {
     }
     
     public var double: Double? {
-        guard contentType == .Double else { return nil }
+        guard contentType == .double else { return nil }
         guard let objectAsDouble = object as? Double else { return nil }
         return objectAsDouble
     }
     
     public var array: [Any]? {
-        guard contentType == .Array else { return nil }
+        guard contentType == .array else { return nil }
         guard let objectAsArray = object as? [JSort] else { return nil }
         
         var anyTypeArray: [Any] = []
         for jsortObject in objectAsArray {
             switch jsortObject.contentType {
-            case .String:
+            case .string:
                 if let certainString = jsortObject.string {
                     anyTypeArray.append(certainString)
                 }
-            case .IntOrBool:
+            case .intOrBool:
                 if let certainInt = jsortObject.int {
                     anyTypeArray.append(certainInt)
                 }
-            case .Double:
+            case .double:
                 if let certainDouble = jsortObject.double {
                     anyTypeArray.append(certainDouble)
                 }
-            case .Array:
+            case .array:
                 if let certainArray = jsortObject.array {
                     anyTypeArray.append(certainArray)
                 }
-            case .Dictionary:
+            case .dictionary:
                 if let certainDictionary = jsortObject.dictionary {
                     anyTypeArray.append(certainDictionary)
                 }
@@ -169,29 +169,29 @@ struct JSort: CustomStringConvertible {
     }
     
     public var dictionary: [String:Any]? {
-        guard contentType == .Dictionary else { return nil }
+        guard contentType == .dictionary else { return nil }
         guard let objectAsDictionary = object as? [String:JSort] else { return nil }
         
         var anyTypeDictionary: [String:Any] = [:]
         for (key, value) in objectAsDictionary {
             switch value.contentType {
-            case .String:
+            case .string:
                 if let certainString = value.string {
                     anyTypeDictionary[key] = certainString
                 }
-            case .IntOrBool:
+            case .intOrBool:
                 if let certainInt = value.int {
                     anyTypeDictionary[key] = certainInt
                 }
-            case .Double:
+            case .double:
                 if let certainDouble = value.double {
                     anyTypeDictionary[key] = certainDouble
                 }
-            case .Array:
+            case .array:
                 if let certainArray = value.array {
                     anyTypeDictionary[key] = certainArray
                 }
-            case .Dictionary:
+            case .dictionary:
                 if let certainDictionary = value.dictionary {
                     anyTypeDictionary[key] = certainDictionary
                 }
@@ -203,17 +203,17 @@ struct JSort: CustomStringConvertible {
     }
     
     public var isNull: Bool {
-        return contentType == .Null
+        return contentType == .null
     }
     
     public var isValid: Bool {
-        return contentType != .InvalidSubscript
+        return contentType != .invalidSubscript
     }
     
     // MARK:
     // MARK: Logging
     
-    var description: String {
+    public var description: String {
         return "<\(contentType)> \(object)"
     }
     
