@@ -31,4 +31,13 @@ class JSortTests: XCTestCase {
         
         XCTAssert(skyIsBlue["cheese"] as? Int == 1)
     }
+    
+    func testArrayReading() {
+        let jsonString = "[\"snap\",\"crackle\",\"pop\"]"
+        let jsonData = jsonString.data(using: String.Encoding.utf8)!
+        
+        guard let jsortObject = JSort(jsonData) else { XCTFail(); return }
+        
+        XCTAssert(jsortObject.array != nil)
+    }
 }

@@ -47,7 +47,7 @@ public struct JSort: CustomStringConvertible {
         
         if verifiedJSONType == .array {
             var parsedArray: [Any] = []
-            let rawArray = foundationObject as! [Any]
+            guard let rawArray = foundationObject as? [Any] else { return nil }
             for item in rawArray {
                 parsedArray.append(JSort(foundationObject: item))
             }
