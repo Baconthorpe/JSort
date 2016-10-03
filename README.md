@@ -36,7 +36,7 @@ func parseDictionary(data: Data) -> [String : String]? {
 // This function uses JSort's 'isValid' property to check if JSON data matches the expected structure.
 
 func validateJSON(data: Data) -> Bool {
-  guard let validJSON = JSort(data) else { return false }
+  guard let _ = JSort(data) else { return false }
   guard validJSON["items"]["businesses"][0]["contact_info"].isValid else { return false }
   guard validJSON["items"]["businesses"][0]["menu"].isValid else { return false }
 
@@ -49,8 +49,7 @@ func validateJSON(data: Data) -> Bool {
 
 func arrayFromJSON(data: Data) -> throws [Int] {
   guard let intArray = JSort(data)?.array as? [Int] else { throw APIError.parsing }
-    return intArray
-  }
+  return intArray
 }
 ```
 
