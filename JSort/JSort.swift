@@ -69,6 +69,11 @@ public struct JSort: CustomStringConvertible {
         self.init(foundationObject: jsonObject)
     }
     
+    public init?(_ string: String) {
+        guard let data = string.data(using: .utf8) else { return nil }
+        self.init(data)
+    }
+    
     // MARK:
     // MARK: Composition
     
