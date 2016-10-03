@@ -1,4 +1,4 @@
-![Logo](JsortLogo-01.png)
+![Logo](JSortLogo-01.png)
 
 JSort is a simple framework for parsing JSON data in Swift.
 
