@@ -54,4 +54,4 @@ func arrayFromJSON(data: Data) -> throws [Int] {
 ```
 
 ## License
-All rights - Zeke Abuhoff 2016
+[MIT License](LICENSE)

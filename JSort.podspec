@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'JSort'
-  s.version          = '0.5'
+  s.version          = '0.6'
   s.summary          = 'JSort is a simple framework for parsing JSON data in Swift.'
 
   s.description      = <<-DESC
